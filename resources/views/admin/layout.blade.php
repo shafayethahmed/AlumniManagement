@@ -12,8 +12,8 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --primary-navy: #0f172a;
-            --accent-gold: #b5935b;
+            --primary-navy: #eff5f8;
+            --accent-gold: darkblue;
             --hover-blue: #1e293b;
             --bg-light: #f8fafc;
             --text-gray: #94a3b8;
@@ -42,15 +42,16 @@
             top: 0;
             display: flex;
             flex-direction: column;
-            padding: 20px 0;
+            padding: 15px 0;
             z-index: 1000;
         }
 
         .sidebar-brand {
+            margin-top: 10px;
             padding: 0 25px 30px;
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--accent-gold);
+            color:darkblue;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -70,7 +71,7 @@
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            color: var(--text-gray);
+            color: black;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s;
@@ -142,7 +143,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <i class="fas fa-graduation-cap"></i> <small>Alumni Desk</small>
+            <i class="fas fa-graduation-cap"><small>Alumni Desk</small></i>
         </div>
         
         <ul class="nav-menu">
@@ -180,7 +181,7 @@
         </ul>
 
         <div class="footer">
-            &copy; {{ date('Y') }} University Alumni
+            &copy; {{ date('Y') }} RTM-AKTU|SAC
         </div>
     </aside>
 
