@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Alumni Portal | Member Access</title>
     <style>
         :root {
@@ -213,59 +214,60 @@
 
         <div id="register" class="tab-content">
             <div id="regNotice" class="alert-box">Registration complete!</div>
-            <form onsubmit="handleRegister(event); return false;">
+            <form method="POST" action="{{ route('pedning.alumni.store') }}">
+                @csrf
                 <div class="form-grid">
                     <div class="field-group">
                         <label>Full Name</label>
-                        <input type="text" id="rName" required>
+                        <input type="text" name="name" required>
                     </div>
                     <div class="field-group">
                         <label>Contact Number</label>
-                        <input type="tel" id="rContact" required>
+                        <input type="tel" name="mobile" required>
                     </div>
                     <div class="field-group">
                         <label>Admission Year</label>
-                        <input type="number" id="rAddYear" required>
+                        <input type="number" name="admission_year" required>
                     </div>
                     <div class="field-group">
                         <label>Graduation Year</label>
-                        <input type="number" id="rGradYear" required>
+                        <input type="number" name="graduation_year" required>
                     </div>
                     <div class="field-group">
                         <label>Department</label>
-                        <input type="text" id="rDept" required>
+                        <input type="text" name="department" required>
                     </div>
                     <div class="field-group">
                         <label>Final CGPA</label>
-                        <input type="number" step="0.01" id="rCgpa" required>
+                        <input type="number" step="0.01" name="final_result" required>
                     </div>
 
                     <div class="field-group full-row">
                         <label>Current Status</label>
-                        <select id="rStatus" onchange="toggleProFields()" required>
+                        <select name="status" id="rStatus" onchange="toggleProFields()" required>
                             <option value="Unemployed" selected>Unemployed</option>
                             <option value="Employed">Employed</option>
                         </select>
                     </div>
 
-                    <div id="proFields">
+                    <div  name="proFields" id="proFields">
                         <div class="field-group">
                             <label>Current Company</label>
-                            <input type="text" id="rCompany">
+                            <input type="text" id="rCompany" name="company">
                         </div>
                         <div class="field-group">
                             <label>Designation</label>
-                            <input type="text" id="rJob">
+                            <input type="text" id="rJob" name="job">
                         </div>
                     </div>
 
                     <div class="field-group full-row">
                         <label>Email Address</label>
-                        <input type="email" id="rEmail" required>
+                        <input type="email" id="rEmail"  name="email"  required>
                     </div>
                     <div class="field-group full-row">
                         <label>Create Password</label>
-                        <input type="password" id="rPass" required>
+                        <input type="password" id="rPass" name="password" required>
                     </div>
                 </div>
                 <button type="submit" class="btn-primary">Create Alumni Account</button>
@@ -275,8 +277,6 @@
 </div>
 
 <script>
-    let users = JSON.parse(localStorage.getItem('alumniPortalDB')) || [];
-
     function toggleTab(id, btn) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
@@ -301,34 +301,6 @@
             jobInput.removeAttribute('required');
             companyInput.value = ""; // Clear values if user switches back
             jobInput.value = "";
-        }
-    }
-
-    function handleRegister(e) {
-        const newUser = {
-            name: document.getElementById('rName').value,
-            email: document.getElementById('rEmail').value,
-            status: document.getElementById('rStatus').value,
-            company: document.getElementById('rCompany').value || "N/A",
-            job: document.getElementById('rJob').value || "N/A",
-            pass: document.getElementById('rPass').value
-        };
-
-        users.push(newUser);
-        localStorage.setItem('alumniPortalDB', JSON.stringify(users));
-        document.getElementById('regNotice').style.display = 'block';
-        setTimeout(() => location.reload(), 1500);
-    }
-
-    function handleLogin(e) {
-        const email = document.getElementById('loginEmail').value;
-        const pass = document.getElementById('loginPass').value;
-        const user = users.find(u => u.email === email && u.pass === pass);
-        if (user) {
-            document.getElementById('loginNotice').style.display = 'block';
-            setTimeout(() => alert('Welcome back!'), 500);
-        } else {
-            alert('Invalid credentials.');
         }
     }
 </script>

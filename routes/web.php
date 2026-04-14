@@ -1,9 +1,9 @@
 <?php
-
+use App\Http\Controllers\PendingMemberController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
-
+// For both admin and user.
 Route::get('/', function () {
     return view('welcome');
 });
@@ -33,6 +33,8 @@ Route::get('/alumni/pending-request',function(){
  Route::get('/alumni/member-review/',function(){
     return view('admin.pending.show');
  })->name('alumni.pending.show');
+ Route::post('/alumni/pending-member/store',[PendingMemberController::class, 'store'])->name('pedning.alumni.store');
+
 
 // Annoucement Section
 Route::get('/alumni/announcement',function(){
@@ -48,3 +50,19 @@ Route::get('/alumni/anouncement-edit',function(){
 Route::get('/alumni/anouncement/show',function(){
     return view('admin.announcement.show');
 })->name('announcement.show');
+
+
+
+// User/Alumni user Routes: 
+Route::get('/alumni/member/dashboard',function(){
+    return view('user.dashboard');
+})->name('user.dashboard');
+Route::get('/alumni/member/profile',function(){
+   return view('user.profile');
+})->name('user.profile');
+Route::get('/alumni/member/change-password',function(){
+   return view('user.change-password');
+})->name('user.change.password');
+Route::get('/alumni/member/all-member',function(){
+    return view('user.alumni.index');
+})->name('user.alumni.member');
