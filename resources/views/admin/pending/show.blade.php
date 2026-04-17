@@ -99,15 +99,15 @@
         <div class="info-grid">
             <div class="info-item">
                 <label>Full Name</label>
-                <p>Arif Rahman</p>
+                <p>{{ucwords($member->name)}}</p>
             </div>
             <div class="info-item">
                 <label>Email Address</label>
-                <p>arif.rahman@example.com</p>
+                <p>{{ $member->email }}</p>
             </div>
             <div class="info-item">
                 <label>Contact Number</label>
-                <p>+880 1712-345678</p>
+                <p>{{ $member->mobile }}</p>
             </div>
         </div>
 
@@ -115,19 +115,19 @@
         <div class="info-grid">
             <div class="info-item">
                 <label>Department</label>
-                <p>Computer Science & Engineering</p>
+                <p>{{ ucwords($member->department) }}</p>
             </div>
             <div class="info-item">
                 <label>Final CGPA</label>
-                <p>3.85 / 4.00</p>
+                <p>{{ $member->final_result }} / 4.00</p>
             </div>
             <div class="info-item">
                 <label>Admission Year</label>
-                <p>2018</p>
+                <p>{{$member->admission_year}}</p>
             </div>
             <div class="info-item">
                 <label>Graduation Year</label>
-                <p>2022</p>
+                <p>{{$member->graduation_year}}</p>
             </div>
         </div>
 
@@ -135,15 +135,15 @@
         <div class="info-grid" style="margin-bottom: 20px;">
             <div class="info-item">
                 <label>Current Status</label>
-                <p><span class="status-badge bg-employed">Employed</span></p>
+                <p><span class="status-badge bg-employed">{{$member->status}}</span></p>
             </div>
             <div class="info-item">
                 <label>Current Company</label>
-                <p>DataSoft Systems Ltd.</p>
+                <p>{{$member->company ?? "N/A"}}</p>
             </div>
             <div class="info-item">
                 <label>Designation</label>
-                <p>Senior Software Engineer</p>
+                <p>{{ $member->job ?? "N/A" }}</p>
             </div>
         </div>
 

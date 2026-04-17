@@ -8,6 +8,7 @@ class PendingMember extends Model
 {
      protected $table = "pendingmember";
       protected $fillable = [
+        'academic_id',
         'name',
         'email',
         'mobile',

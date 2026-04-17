@@ -218,6 +218,10 @@
                 @csrf
                 <div class="form-grid">
                     <div class="field-group">
+                        <label>Acadmic ID</label>
+                        <input type="text" name="academic_id" required>
+                    </div>
+                    <div class="field-group">
                         <label>Full Name</label>
                         <input type="text" name="name" required>
                     </div>

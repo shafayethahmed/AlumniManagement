@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pendingmember', function (Blueprint $table) {
             $table->id();
+            $table->string('academic_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('mobile');

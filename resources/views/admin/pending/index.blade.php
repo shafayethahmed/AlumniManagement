@@ -129,7 +129,7 @@
             <input type="text" id="memberSearch" placeholder="Search by name, ID, or email..." onkeyup="filterTable()">
         </div>
         <div style="font-size: 0.8rem; color: #64748b;">
-            Total Pending: <span id="pendingCount">2</span>
+            Total Pending: <span id="pendingCount">{{ count($pendingMembers) }}</span>
         </div>
     </div>
 
@@ -148,36 +148,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="font-family: monospace; font-weight: 600;">UG-01-2245</td>
-                    <td><strong>Arif Rahman</strong><br><small>arif@email.com</small></td>
-                    <td>CSE</td>
-                    <td><span class="year-badge">2018</span></td>
-                    <td><span class="year-badge">2022</span></td>
-                    <td>3.85</td>
-                    <td style="text-align: center;">
-                        <button class="btn-icon-sm" title="View Full Profile" onclick="profileShow()"><i class="fas fa-eye"></i></button>
-                    </td>
-                    <td style="text-align: center;">
-                        <button class="btn-action approve-btn">APPROVE</button>
-                        <button class="btn-action reject-btn">REJECT</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-family: monospace; font-weight: 600;">UG-03-9912</td>
-                    <td><strong>Farhana Islam</strong><br><small>farhana@email.com</small></td>
-                    <td>BBA</td>
-                    <td><span class="year-badge">2019</span></td>
-                    <td><span class="year-badge">2023</span></td>
-                    <td>3.92</td>
-                    <td style="text-align: center;">
-                        <button class="btn-icon-sm" title="View Full Profile"><i class="fas fa-eye"></i></button>
-                    </td>
-                    <td style="text-align: center;">
-                        <button class="btn-action approve-btn">APPROVE</button>
-                        <button class="btn-action reject-btn">REJECT</button>
-                    </td>
-                </tr>
+                @forelse ($pendingMembers as $pm )
+                            <tr>
+                            <td style="font-family: monospace; font-weight: 600;">{{ $pm->academic_id }}</td>
+                            <td><strong>{{ ucwords($pm->name) }}</strong><br><small>{{ $pm->email }}</small></td>
+                            <td>CSE</td>
+                            <td><span class="year-badge">{{ $pm->admission_year }}</span></td>
+                            <td><span class="year-badge">{{ $pm->graduation_year }}</span></td>
+                            <td>{{ $pm->final_result }}</td>
+                            <td style="text-align: center;">
+                                <a href="{{ route('admin.pending.show', $pm->id) }}"><i class="fas fa-eye"></i></a>
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="{{ route('admin.pending.confirm',$pm->id) }}" class="btn-action approve-btn" style="text-decoration: none;"  >APPROVE</a> 
+                                 <form action="{{ route('admin.pending.reject',$pm->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                   <button type="submit" class="btn-action reject-btn"   onclick="return confirm('Are You Sure?')" style="border:none; background:none;">REJECT </button>
+                                 </form>
+                            </td>
+                         </tr>
+                @empty
+                   <tr>
+                        <td colspan="8" style="text-align: center;">
+                            No Data Found!
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -204,9 +201,5 @@
         }
     }
 
-
-     function profileShow(){
-        window.location.href = '{{ route('alumni.pending.show') }}'
-     }
 </script>
 @endpush

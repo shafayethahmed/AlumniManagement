@@ -4,79 +4,85 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\PendingMember;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 
 class PendingMemberController extends Controller
 {
     public function index(){
         //Return the all pending member: 
+         $pendingMembers = PendingMember::all();
+         return view('admin.pending.index',compact('pendingMembers'));
     }
 
-public function store(Request $request)
-{
-    // $validated = $request->validate([
-    //     'name'            => 'required|string|max:255',
-    //     'email'           => 'required|email|max:255|unique:pending_members,email', // or `users` table
-    //     'mobile'          => [
-    //         'required',
-    //         'string',
-    //         'max:20',
-    //         'regex:/^\+?[1-9][0-9 \-\(\)\+]{6,15}$/',
-    //     ],
-    //     'admissionYear'   => 'required|integer|min:1950|max:2099',
-    //     'graduationYear'  => 'required|integer|min:1950|max:2099',
-    //     'department'      => 'required|string|max:255',
-    //     'finalResult'     => 'nullable|numeric|between:0,4.00',
-    //     'status'          => 'required|in:Unemployed,Employed',
-    //     'company'         => 'nullable|string|max:255',
-    //     'job'             => 'nullable|string|max:255',
-    //     'pass'            => 'required|string|min:8',
-    // ]);
-        
-    var_dump($request->all());
 
-     PendingMember::create([
-        'name'            => $request->name,
-        'email'           => $request->email,
-        'mobile'          => $request->mobile,
-        'admission_year'  => $request->admission_year,
-        'graduation_year' => $request->graduation_year,
-        'department'      => $request->department,
-        'final_result'    => $request->final_result,
-        'status'          => $request->status,
-        'company'         => $request->company,
-        'job'             => $request->job,
-        'password'        => Hash::make($request->password),
-    ]);
+    public function show(PendingMember $member){
+       return view('admin.pending.show',compact('member'));
+    }
 
+        public function store(Request $request)
+        {
+        try{    
+            //Validation the Important variable: 
+            $validated = $request->validate([
+                'academic_id' => 'required|string|unique:pendingmember,academic_id',
+                'email' => 'required|email|unique:pendingmember,email',
+                'mobile' => 'required|unique:pendingmember,mobile',
+            ]);
+                PendingMember::create([
+                        'academic_id' => $validated['academic_id'],
+                        'name'            => $request->name,
+                        'email'           => $validated['email'],
+                        'mobile'          => $validated['mobile'],
+                        'admission_year'  => $request->admission_year,
+                        'graduation_year' => $request->graduation_year,
+                        'department'      => $request->department,
+                        'final_result'    => $request->final_result,
+                        'status'          =>$request->status,
+                        'company'         => $request->company,
+                        'job'             => $request->job,
+                        'password'        => Hash::make($request->password),
+                    ]);   
+            } catch(\Exception $e){
+                return redirect()->back()->with('error','Something Wrong!');
+        }
+            
+        return redirect()->back()->with('success','Alumni Registration successfully done please check after 2 hour.');
 
-    // try {
-    //     $member = new PendingMember();
-    //     $member->name             = $validated['name'];
-    //     $member->email            = $validated['email'];
-    //     $member->mobile           = $validated['mobile'];
-    //     $member->admission_year   = $validated['admission_year'];
-    //     $member->graduation_year  = $validated['graduation_year'];
-    //     $member->department       = $validated['department'];
-    //     $member->final_result     = $validated['final_result'];
-    //     $member->status           = $validated['status'];
-    //     $member->company          = $validated['company'];
-    //     $member->job              = $validated['job'];
-    //     $member->password         = Hash::make($validated['password']);
-    //     // member_status defaults to 'pending' from DB
+        }
 
-    //     $member->save();
+     public function confirm(PendingMember $member)
+        {
+            DB::transaction(function () use ($member) {
 
-    //     return response()->json([
-    //         'status'  => 'success',
-    //         'message' => 'Alumni registered successfully',
-    //     ]);
-    // } catch (\Exception $e) {
-    //     return response()->json([
-    //         'status'  => 'error',
-    //         'message' => 'Something went wrong. Please try again.',
-    //     ], 500);
-    // }
-}
+                $user = User::create([
+                    'name' => $member->name,
+                    'email' => $member->email,
+                    'password' => $member->password,
+                ]);
+
+                Profile::create([
+                    'user_id' => $user->id,
+                    'academic_id' => $member->academic_id,
+                    'mobile' => $member->mobile,
+                    'admission_year' => $member->admission_year,
+                    'graduation_year' => $member->graduation_year,
+                    'department' => $member->department,
+                    'cgpa' => $member->final_result,
+                    'status' => $member->status,
+                ]);
+                //Delete the Pending Member-id:
+                     $member->delete();
+            });
+                return redirect()->back()->with('success', 'Member Confirmed Successfully');
+        }
+
+        public function reject(PendingMember $member){
+           $member->delete();
+           return redirect()->back()->with('error','Member Request Rejected.');
+        }
 }

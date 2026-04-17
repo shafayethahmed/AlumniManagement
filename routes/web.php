@@ -26,16 +26,11 @@ Route::get('/alumni/show-info/',function(){
 })->name('alumni.show');
 
 // Pending Member Section
-Route::get('/alumni/pending-request',function(){
-    return view('admin.pending.index');
-})->name('alumni.pending');
-
- Route::get('/alumni/member-review/',function(){
-    return view('admin.pending.show');
- })->name('alumni.pending.show');
- Route::post('/alumni/pending-member/store',[PendingMemberController::class, 'store'])->name('pedning.alumni.store');
-
-
+Route::get('/alumni/pending-request',[PendingMemberController::class, 'index'])->name('alumni.pending');
+Route::get('/alumni/member-review/{member}',[PendingMemberController::class, 'show'])->name('admin.pending.show');
+Route::post('/alumni/pending-member/store',[PendingMemberController::class, 'store'])->name('pedning.alumni.store');
+Route::get('/alumni/pending-member/{member}', [PendingMemberController::class, 'confirm'])->name('admin.pending.confirm');
+Route::delete('/alumni/pending-member/{member}', [PendingMemberController::class, 'reject'])->name('admin.pending.reject');
 // Annoucement Section
 Route::get('/alumni/announcement',function(){
     return view('admin.announcement.index');
