@@ -19,7 +19,7 @@ class Profile extends Model
     
 
    //Profile Model Relation:
-   public function users(){
+   public function user(){
     return $this->belongsTo(User::class,'user_id');
    }
 

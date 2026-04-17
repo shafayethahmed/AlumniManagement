@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\PendingMemberController;
+use App\Http\Controllers\MemberController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
@@ -18,12 +19,9 @@ Route::get('/change-password',function(){
 })->name('change.password');
 
 // Alumni Member
-Route::get('/alumni/members',function(){
-    return view('admin.alumni.index');
-})->name('alumni.member');
-Route::get('/alumni/show-info/',function(){
-   return view('admin.alumni.show');
-})->name('alumni.show');
+Route::get('/alumni/members',[MemberController::class, 'index'])->name('alumni.member');
+Route::get('/alumni/member/{member}',[MemberController::class, 'show'])->name('alumni.show');
+Route::delete('/alumni/member/{member}',[MemberController::class, 'destroy'])->name('alumni.destroy');
 
 // Pending Member Section
 Route::get('/alumni/pending-request',[PendingMemberController::class, 'index'])->name('alumni.pending');

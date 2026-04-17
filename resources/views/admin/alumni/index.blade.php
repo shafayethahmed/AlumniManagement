@@ -141,36 +141,35 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="alumni-row">
-                    <td class="col-id" style="color: #94a3b8;">#001</td>
-                    <td class="col-name"><strong>John Doe</strong></td>
-                    <td class="col-email">j.doe@company.com</td>
-                    <td>+880 1712-345678</td>
-                    <td>CSE</td>
-                    <td class="col-year">2022</td>
-                    <td><span class="badge badge-employed">Employed</span></td>
+                 @forelse ($members as $member )
+                  <tr class="alumni-row">
+                    <td class="col-id" style="color: #94a3b8;">{{ $member->profile->academic_id }}</td>
+                    <td class="col-name"><strong>{{ $member->name }}</strong></td>
+                    <td class="col-email">{{ $member->email }}</td>
+                    <td>{{ $member->profile->mobile }}</td>
+                    <td>{{ $member->profile->department }}</td>
+                    <td class="col-year">{{$member->profile->graduation_year  }}</td>
+                    <td><span class="badge badge-employed">{{ $member->profile->status }}</span></td>
                     <td>
                         <div class="action-btns">
-                            <a href="{{ route('alumni.show') }}" class="btn-icon view-btn"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="btn-icon delete-btn"><i class="fas fa-trash"></i></a>
+                            <a href="{{ route('alumni.show',$member->id) }}" class="btn-icon view-btn"><i class="fas fa-eye"></i></a>
+                             
+                            <form action="{{ route('alumni.destroy',$member->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                 <button type="submit" class="btn-icon delete-btn" onclick="return(confirm('Are You Sure?'))"><i class="fas fa-trash"></i></button>
+                            </form>
                         </div>
                     </td>
                 </tr>
-                <tr class="alumni-row">
-                    <td class="col-id" style="color: #94a3b8;">#002</td>
-                    <td class="col-name"><strong>Sarah Jenkins</strong></td>
-                    <td class="col-email">s.jenkins@edu.com</td>
-                    <td>+880 1512-987654</td>
-                    <td>BBA</td>
-                    <td class="col-year">2024</td>
-                    <td><span class="badge badge-unemployed">Unemployed</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <a href="#" class="btn-icon view-btn"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="btn-icon delete-btn"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
+                 @empty
+                            <tr>
+                        <td colspan="8" style="text-align: center;">
+                            No Data Found!
+                        </td>
+                    </tr>
+                 @endforelse
+              
             </tbody>
         </table>
     </div>

@@ -117,35 +117,35 @@
 
     <div class="info-card">
         <div class="header-section">
-            <h1 class="profile-name">Arif Rahman</h1>
-            <p style="color: #64748b; margin-top: 5px;">Member ID: #ALUM-2026-8801</p>
+            <h1 class="profile-name">{{ $member->name }}</h1>
+            <p style="color: #64748b; margin-top: 5px;">Member ID:{{ $member->profile->academic_id }}</p>
         </div>
 
         <span class="section-heading">Personal & Academic Info</span>
         <div class="data-grid">
             <div class="data-item">
                 <label>Email Address</label>
-                <p>arif.rahman@example.com</p>
+                <p>{{ $member->email }}</p>
             </div>
             <div class="data-item">
                 <label>Contact Number</label>
-                <p>+880 1712-345678</p>
+                <p>{{ $member->profile->mobile }}</p>
             </div>
             <div class="data-item">
                 <label>Department</label>
-                <p>Computer Science & Engineering</p>
+                <p>{{ $member->profile->department }}</p>
             </div>
             <div class="data-item">
                 <label>Final CGPA</label>
-                <p>3.92</p>
+                <p>{{ $member->profile->cgpa }}</p>
             </div>
             <div class="data-item">
                 <label>Admission Year</label>
-                <p>2018</p>
+                <p>{{ $member->profile->admission_year }}</p>
             </div>
             <div class="data-item">
                 <label>Graduation Year</label>
-                <p>2022</p>
+                <p>{{ $member->profile->graduation_year }}</p>
             </div>
         </div>
 
