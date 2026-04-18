@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\PendingMemberController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\DashboardController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
@@ -10,9 +11,7 @@ Route::get('/', function () {
 });
 
 // Admin Routes
-Route::get('/dashboard',function(){
-    return view('admin.dashbord');
-})->name('admin.dashboard');
+Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/change-password',function(){
  return view('admin.change-password');

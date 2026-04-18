@@ -108,28 +108,28 @@
             <div class="stat-icon bg-blue"><i class="fas fa-users"></i></div>
             <div class="stat-info">
                 <p>Total Alumni</p>
-                <h3>1,240</h3>
+                <h3 style="text-align: center;">{{ $totalUser }}</h3>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon bg-amber"><i class="fas fa-user-clock"></i></div>
             <div class="stat-info">
                 <p>Pending Request</p>
-                <h3>18</h3>
+                <h3 style="text-align: center;">{{$totalPending }}</h3>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon bg-green"><i class="fas fa-briefcase"></i></div>
             <div class="stat-info">
                 <p>Employed</p>
-                <h3>942</h3>
+                <h3 style="text-align: center;">{{$totalEmployed }}</h3>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon bg-slate"><i class="fas fa-user-slash"></i></div>
             <div class="stat-info">
                 <p>Unemployed</p>
-                <h3>280</h3>
+                <h3 style="text-align: center;">{{ $totalUnEmployed }}</h3>
             </div>
         </div>
     </div>
