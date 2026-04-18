@@ -1,7 +1,10 @@
 <?php
+
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\PendingMemberController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PasswordController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
@@ -12,10 +15,8 @@ Route::get('/', function () {
 
 // Admin Routes
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
-
-Route::get('/change-password',function(){
- return view('admin.change-password');
-})->name('change.password');
+Route::post('/admin/change-password', [PasswordController::class, 'updatePassword'])->name('admin.password.update');
+Route::get('/change-password',[PasswordController::class,'index'])->name('change.password');
 
 // Alumni Member
 Route::get('/alumni/members',[MemberController::class, 'index'])->name('alumni.member');
@@ -29,20 +30,13 @@ Route::post('/alumni/pending-member/store',[PendingMemberController::class, 'sto
 Route::get('/alumni/pending-member/{member}', [PendingMemberController::class, 'confirm'])->name('admin.pending.confirm');
 Route::delete('/alumni/pending-member/{member}', [PendingMemberController::class, 'reject'])->name('admin.pending.reject');
 // Annoucement Section
-Route::get('/alumni/announcement',function(){
-    return view('admin.announcement.index');
-})->name('alumni.announcement');
+Route::get('/alumni/announcement',[AnnouncementController::class, 'index'])->name('alumni.announcement');
 // Create,edit,show  announcement : 
-Route::get('/alumni/announcement/create',function(){
-  return view('admin.announcement.create');
-})->name('create.announcement');
-Route::get('/alumni/anouncement-edit',function(){
-  return view('admin.announcement.edit');
-})->name('announcement.edit');
-Route::get('/alumni/anouncement/show',function(){
-    return view('admin.announcement.show');
-})->name('announcement.show');
-
+Route::get('/alumni/announcement/create',[AnnouncementController::class, 'create'])->name('create.announcement');
+Route::post('/alumni/announcement/store',[AnnouncementController::class, 'store'])->name('announcement.store');
+Route::get('/alumni/edit/{announcement}',[AnnouncementController::class, 'edit'])->name('announcement.edit');
+Route::get('/alumni/show/{announcement}',[AnnouncementController::class, 'show'])->name('announcement.show');
+Route::put('/alumni/update/{announcement}',[AnnouncementController::class, 'update'])->name('announcement.update');
 
 
 // User/Alumni user Routes: 

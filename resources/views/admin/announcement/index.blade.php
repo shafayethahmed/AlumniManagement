@@ -100,6 +100,9 @@
         transition: 0.2s;
         border: 1px solid #e2e8f0;
     }
+    td,tr{
+        text-align: center;
+    }
 
     .view-btn { color: #64748b; }
     .edit-btn { border-color: #fbbf24; color: #92400e; }
@@ -128,51 +131,41 @@
         <table class="custom-table">
             <thead>
                 <tr>
-                    <th style="width: 50px;">#</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Visibility</th>
-                    <th>Date Posted</th>
+                    <th style="width: 50px; text-align:center;" >#</th>
+                    <th style="text-align: center;">Title</th>
+                    <th style="text-align: center;">Type</th>
+                    <th style="text-align: center;">Visibility</th>
+                    <th style="text-align: center;">Date Posted</th>
                     <th style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>01</td>
-                    <td><strong>Annual Reunion 2026</strong></td>
-                    <td>
-                        <span class="text-truncate-2">Join us for the biggest alumni gathering of the year at the Grand Hall...</span>
-                    </td>
-                    <td><span style="color: #6366f1; font-weight:600;">Event</span></td>
-                    <td><span class="status-toggle status-visible">Visible</span></td>
-                    <td>13 Apr 2026</td>
-                    <td>
-                        <div class="action-btns">
-                            <a href="{{ route('announcement.show') }}" class="btn-icon view-btn" title="View"><i class="fas fa-eye"></i></a>
-                            <a href="{{ route('announcement.edit') }}" class="btn-icon edit-btn" title="Edit"><i class="fas fa-edit"></i></a>
-                            <a href="#" class="btn-icon delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
+                @forelse ($announcements as $announcement )
+                       <tr>
+                        <td>{{ $announcement->id }}</td>
+                        <td><strong>{{ $announcement->title }}</strong></td>
+                        <td><span style="color: #0c0435; font-weight:600;">{{ ucwords($announcement->type) }}</span></td>
+                        <td>
+                          @if ($announcement->is_visible === 1)
+                               <span class="status-toggle status-visible">Visible</span>
+                          @else
+                                    <span class="status-toggle status-hidden">Hidden</span>
 
-                <tr>
-                    <td>02</td>
-                    <td><strong>Career Fair 2026</strong></td>
-                    <td>
-                        <span class="text-truncate-2">Top companies are visiting our campus to hire alumni members next week...</span>
-                    </td>
-                    <td><span style="color: #f59e0b; font-weight:600;">Job Post</span></td>
-                    <td><span class="status-toggle status-hidden">Hidden</span></td>
-                    <td>10 Apr 2026</td>
-                    <td>
-                        <div class="action-btns">
-                            <a href="#" class="btn-icon view-btn" title="View"><i class="fas fa-eye"></i></a>
-                            <a href="#" class="btn-icon edit-btn" title="Edit"><i class="fas fa-edit"></i></a>
-                            <a href="#" class="btn-icon delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
+                          @endif    
+                        
+                        </td>
+                        <td>{{ $announcement->created_at->format('d M Y') }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="{{ route('announcement.show',$announcement->id) }}" class="btn-icon view-btn" title="View"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('announcement.edit',$announcement->id) }}" class="btn-icon edit-btn" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="btn-icon delete-btn" title="Delete"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </td>
+                  </tr>
+                @empty
+                    
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -91,35 +91,21 @@
     <div class="view-card">
         <div class="announcement-header">
             <div style="margin-bottom: 10px;">
-                <span class="type-badge">Event</span>
+                <span class="type-badge">{{  $announcement->type }}</span>
             </div>
-            <h1 class="announcement-title">Annual Alumni Reunion 2026: Rekindling Connections</h1>
+            <h1 class="announcement-title">{{ $announcement->title }}</h1>
             
             <div class="meta-row">
-                <span><i class="far fa-calendar-alt"></i> Posted: April 13, 2026</span>
-                <span><i class="far fa-user"></i> Admin Office</span>
+                <span><i class="far fa-calendar-alt"></i> Posted:{{$announcement->created_at->format('d M Y') }}</span>
             </div>
         </div>
 
         <div class="description-content">
-            Join us for an unforgettable evening at the Grand Hall as we celebrate another year of excellence. 
-            
-            This year's reunion will feature keynote speeches from our distinguished alumni in the tech and finance sectors, followed by a formal dinner and networking session. 
-            
-            Agenda:
-            - 6:00 PM: Welcome Drinks & Registration
-            - 7:00 PM: Opening Ceremony
-            - 8:00 PM: Dinner & Networking
-            - 9:30 PM: Awards Ceremony
-            
-            Important Note:
-            Please carry your alumni digital ID card for quick entry. Formal attire is highly recommended. 
-            
-            We look forward to seeing you there!
+           {{ $announcement->description }}
         </div>
 
         <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #f1f5f9; color: #94a3b8; font-size: 0.8rem;">
-            Ref ID: ANN-2026-0413 | Last Modified: April 13, 2026, 10:09 PM
+            Last Modified: {{  $announcement->updated_at->format('d M Y') }}
         </div>
     </div>
 </div>

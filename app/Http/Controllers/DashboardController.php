@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\PendingMember;
+use App\Models\Announcement;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,6 +20,8 @@ class DashboardController extends Controller
          $totalPending = PendingMember::count();
          $totalEmployed = Profile::where('status','Employed')->count();
          $totalUnEmployed = Profile::where('status','Unemployed')->count();
-         return view('admin.dashbord',compact('totalUser','totalPending','totalEmployed','totalUnEmployed'));
+        $announcements = Announcement::where('is_visible', '1')->get();
+
+         return view('admin.dashbord',compact('totalUser','totalPending','totalEmployed','totalUnEmployed','announcements'));
     }
 }

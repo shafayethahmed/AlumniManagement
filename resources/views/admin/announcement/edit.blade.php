@@ -158,7 +158,7 @@
         </a>
     </div>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('announcement.update',$announcement->id) }}" method="POST">
         @csrf
         @method('PUT')
         
@@ -166,12 +166,12 @@
             <div class="card">
                 <div class="field-group">
                     <label>Announcement Title</label>
-                    <input type="text" name="title" class="form-control" value="Annual Reunion 2026" required>
+                    <input type="text" name="title" class="form-control" value="{{ $announcement->title }}" required>
                 </div>
 
                 <div class="field-group">
                     <label>Content / Description</label>
-                    <textarea name="description" class="form-control">Join us for the biggest alumni gathering of the year at the Grand Hall. We will have networking sessions, dinner, and guest speakers from our successful alumni chapters worldwide.</textarea>
+                    <textarea name="description" class="form-control">{{ $announcement->description }}</textarea>
                 </div>
             </div>
 
@@ -180,39 +180,30 @@
                     <div class="field-group">
                         <label>Announcement Type</label>
                         <select name="type" class="form-control">
-                            <option value="General">General News</option>
-                            <option value="Event" selected>Event</option>
-                            <option value="Job">Job Opportunity</option>
-                            <option value="Urgent">Urgent Notice</option>
+                            <option value="{{ $announcement->type }}" selected>{{ ucwords($announcement->type) }}</option>
+                            <option value="general">General News</option>
+                            <option value="event">Event</option>
+                            <option value="job-opportunity">Job Opportunity</option>
+                            <option value="urgent-notice">Urgent Notice</option>
                         </select>
                     </div>
+                        <div class="field-group">
+                            <label>Visibility</label>
 
-                    <div class="field-group" style="background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <label style="font-size: 0.75rem; margin-bottom: 0;">Show on Website</label>
-                            <label class="switch">
-                                <input type="checkbox" name="is_visible" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
+                            <select name="is_visible" class="form-control" required>
+                                <option value="1">
+                                    Show
+                                </option>
 
-                    <div class="field-group">
-                        <label>Current Featured Image</label>
-                        <div class="image-preview-box">
-                            <img src="https://via.placeholder.com/300x150" alt="Preview">
+                                <option value="0">
+                                    Hide
+                                </option>
+                            </select>
                         </div>
-                        <label style="font-size: 0.7rem; color: #94a3b8;">Change Image:</label>
-                        <input type="file" name="image" class="form-control" style="font-size: 0.8rem; padding: 7px;">
-                    </div>
 
                     <button type="submit" class="btn-update">
                         <i class="fas fa-save"></i> Save Changes
                     </button>
-
-                    <a href="#" class="btn-delete-outline" onclick="return confirm('Permanently delete this announcement?')">
-                        <i class="fas fa-trash-alt"></i> Delete Announcement
-                    </a>
                 </div>
             </div>
         </div>

@@ -125,7 +125,7 @@
         </a>
     </div>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('announcement.store') }}" method="POST">
         @csrf
         <div class="form-grid">
             <div class="card">
@@ -136,7 +136,7 @@
 
                 <div class="field-group">
                     <label>Content / Description</label>
-                    <textarea name="description" class="form-control" placeholder="Describe the details of your announcement..."></textarea>
+                    <textarea name="description" class="form-control" placeholder="Describe the details of your announcement..." required></textarea>
                 </div>
             </div>
 
@@ -145,28 +145,30 @@
                     <div class="field-group">
                         <label>Announcement Type</label>
                         <select name="type" class="form-control">
-                            <option value="General">General News</option>
-                            <option value="Event">Event</option>
-                            <option value="Job">Job Opportunity</option>
-                            <option value="Urgent">Urgent Notice</option>
+                            <option value="general">General News</option>
+                            <option value="event">Event</option>
+                            <option value="job-opportunity">Job Opportunity</option>
+                            <option value="urgent-notice">Urgent Notice</option>
                         </select>
                     </div>
 
-                    <div class="sidebar-section" style="margin-bottom: 15px;">
+                  <div class="sidebar-section" style="margin-bottom: 15px;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <label style="font-size: 0.8rem; font-weight: 700; color: #475569;">VISIBILITY</label>
+
+                            <!-- Hidden input ensures value always sent -->
+                            <input type="hidden" name="is_visible" value="0">
+
                             <label class="switch">
-                                <input type="checkbox" name="is_visible" checked>
+                                <input type="checkbox" name="is_visible" value="1" checked>
                                 <span class="slider"></span>
                             </label>
                         </div>
-                        <small style="color: #64748b; display: block; margin-top: 5px;">Toggle to show or hide from the website.</small>
-                    </div>
 
-                    <div class="field-group">
-                        <label>Featured Image</label>
-                        <input type="file" name="image" class="form-control" style="font-size: 0.8rem; padding: 7px;">
-                    </div>
+                        <small style="color: #64748b; display: block; margin-top: 5px;">
+                            Toggle to show or hide from the website.
+                        </small>
+                   </div>
 
                     <button type="submit" class="btn-submit">
                         <i class="fas fa-paper-plane"></i> Publish Now

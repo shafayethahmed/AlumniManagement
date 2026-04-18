@@ -179,27 +179,12 @@
 
         <div class="box">
             <h3 class="box-title"><i class="fas fa-bullhorn" style="color: #b5935b;"></i> Announcements</h3>
-            
-            <div class="announce-item">
-                <h4>Annual Gala 2026</h4>
-                <p>Registration for the annual gala dinner is now open for all batches.</p>
-            </div>
-            
-            <div class="announce-item">
-                <h4>System Maintenance</h4>
-                <p>The alumni portal will be down for scheduled maintenance at 12:00 AM.</p>
-            </div>
-
-            <div class="announce-item">
-                <h4>New Job Posting Policy</h4>
-                <p>Important update regarding how alumni can post jobs in the forum.</p>
-            </div>
-
-            <a href="{{ route('alumni.announcement') }}" style="display: block; text-align: center; font-size: 0.75rem; color: #b5935b; font-weight: 700; text-decoration: none; margin-top: 15px;">
-                VIEW ALL ANNOUNCEMENTS <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-
+              @foreach ($announcements as $announcement)
+                   <div class="announce-item">
+                        <h4>{{ $announcement->title }}</h4>
+                        <p>{{ $announcement->description }}</p>
+                    </div>
+              @endforeach
     </div>
 </div>
 @endsection

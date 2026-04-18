@@ -97,7 +97,7 @@
     }
 
     .status-tag {
-        font-size: 0.7rem;
+        font-size: 0.9 rem;
         padding: 2px 8px;
         border-radius: 4px;
         background: #dcfce7;
@@ -147,32 +147,51 @@
                 <label>Graduation Year</label>
                 <p>{{ $member->profile->graduation_year }}</p>
             </div>
+            <div class="data-item">
+                <label>Working Status</label>
+                
+                <span class="status-tag">{{ $member->profile->status }}</span></p>
+            </div>
         </div>
+        @if ($member->profile->status === "Employed")
+             <span class="section-heading">Professional Experience Timeline</span>
+                    <div class="experience-box">
+                        <div class="experience-entry">
+                            <p class="job-title">Senior Software Engineer <span class="status-tag">Current</span></p>
+                            <p class="company-name">Google Bangladesh Ltd.</p>
+                            <small style="color: #94a3b8;">January 2024 — Present</small>
+                        </div>
+
+                        <div class="experience-entry">
+                            <p class="job-title">Full Stack Developer</p>
+                            <p class="company-name">Pathao Inc.</p>
+                            <small style="color: #94a3b8;">June 2022 — December 2023</small>
+                        </div>
+
+                        <div class="experience-entry">
+                            <p class="job-title">Junior Web Intern</p>
+                            <p class="company-name">TigerIT Bangladesh</p>
+                            <small style="color: #94a3b8;">January 2022 — May 2022</small>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; text-align: right; color: #cbd5e1; font-size: 0.75rem;">
+                        Record Verified: April 13, 2026
+                    </div>
+                </div>
+            </div>
+        @else
 
         <span class="section-heading">Professional Experience Timeline</span>
-        <div class="experience-box">
-            <div class="experience-entry">
-                <p class="job-title">Senior Software Engineer <span class="status-tag">Current</span></p>
-                <p class="company-name">Google Bangladesh Ltd.</p>
-                <small style="color: #94a3b8;">January 2024 — Present</small>
+                    <div class="experience-box">
+                        <div class="experience-entry">
+                            <p>
+                                <i>This user is currently unemployed. You will be able to view the work experience once the user updates their status to employed.</i>
+                            </p>
+                        </div>
+                </div>
             </div>
-
-            <div class="experience-entry">
-                <p class="job-title">Full Stack Developer</p>
-                <p class="company-name">Pathao Inc.</p>
-                <small style="color: #94a3b8;">June 2022 — December 2023</small>
-            </div>
-
-            <div class="experience-entry">
-                <p class="job-title">Junior Web Intern</p>
-                <p class="company-name">TigerIT Bangladesh</p>
-                <small style="color: #94a3b8;">January 2022 — May 2022</small>
-            </div>
-        </div>
-
-        <div style="margin-top: 30px; text-align: right; color: #cbd5e1; font-size: 0.75rem;">
-            Record Verified: April 13, 2026
-        </div>
-    </div>
-</div>
+            
+        @endif
+       
 @endsection
