@@ -143,8 +143,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <i class="fas fa-graduation-cap"><small>Alumni Desk</small></i>
-            <sub>Alumni Portal</sub>
+            <i class="fas fa-graduation-cap"><small>Alumni Tracker</small></i>
         </div>
         
         <ul class="nav-menu">
@@ -154,7 +153,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('user.profile') }}" class="nav-link">
+                {{-- <a href="{{ route('user.profile') }}" class="nav-link"> --}}
+                 <a href="#" class="nav-link">
                     <i class="fas fa-user"></i> Profile
                 </a>
             </li>

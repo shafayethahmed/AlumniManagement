@@ -143,7 +143,7 @@
 
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <i class="fas fa-graduation-cap"><small>Alumni Desk</small></i>
+            <i class="fas fa-graduation-cap"><small>Alumni Tracker</small></i>
         </div>
         
         <ul class="nav-menu">

@@ -14,9 +14,9 @@ Route::get('/', function () {
 });
 
 // Admin Routes
-Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 Route::post('/admin/change-password', [PasswordController::class, 'updatePassword'])->name('admin.password.update');
-Route::get('/change-password',[PasswordController::class,'index'])->name('change.password');
+Route::get('/admin/change-password',[PasswordController::class,'index'])->name('change.password');
 
 // Alumni Member
 Route::get('/alumni/members',[MemberController::class, 'index'])->name('alumni.member');
@@ -38,17 +38,8 @@ Route::get('/alumni/edit/{announcement}',[AnnouncementController::class, 'edit']
 Route::get('/alumni/show/{announcement}',[AnnouncementController::class, 'show'])->name('announcement.show');
 Route::put('/alumni/update/{announcement}',[AnnouncementController::class, 'update'])->name('announcement.update');
 
-
+ 
 // User/Alumni user Routes: 
-Route::get('/alumni/member/dashboard',function(){
-    return view('user.dashboard');
-})->name('user.dashboard');
-Route::get('/alumni/member/profile',function(){
-   return view('user.profile');
-})->name('user.profile');
-Route::get('/alumni/member/change-password',function(){
-   return view('user.change-password');
-})->name('user.change.password');
-Route::get('/alumni/member/all-member',function(){
-    return view('user.alumni.index');
-})->name('user.alumni.member');
+Route::get('/dashboard',fn() => view('user.dashboard'))->name('user.dashboard');
+Route::get('/change-password' , fn() => view('user.change-password'))->name('user.change.password');
+Route::get('/members', fn()=>view('user.alumni.index'))->name('user.alumni.member');

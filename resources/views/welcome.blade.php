@@ -209,6 +209,7 @@
                     <input type="password" id="loginPass" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-primary">Enter Portal</button>
+                <a href="{{ route('user.dashboard') }}">User Login</a>
             </form>
         </div>
 

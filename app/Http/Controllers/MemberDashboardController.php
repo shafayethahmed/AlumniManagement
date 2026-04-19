@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Carbon;
+use App\Http\Controllers\Controller;
+use App\Models\Announcement;
+use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class MemberDashboardController extends Controller
+{
+    public function index(){
+        //first getting the info about stats:
+        $totalAlumni = User::count();
+        $totalEmployed = Profile::where('status','Employed')->count();
+        $totalUnEmployed = Profile::where('status','Unemployed')->count();
+        // $total = Profile::where('created_at', '>=', Carbon::now()->subDays(2));  Last 3 day job Update
+        //Announcement Call : 
+        $announcements = Announcement::where('is_visible',1)->get();
+ 
+        return response()->json([
+            'status'=> true,
+             'data' => [
+                'stats' => [
+                    'totalAlumni' => $totalAlumni,
+                    'totalEmployed' => $totalEmployed,
+                    'totalUnemployed' => $totalUnEmployed,
+                ],
+                'announcements' => $announcements,
+             ]
+        ]);
+    }
+}

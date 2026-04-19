@@ -108,21 +108,28 @@
             <div class="stat-icon bg-blue"><i class="fas fa-users"></i></div>
             <div class="stat-info">
                 <p>Total Alumni</p>
-                <h3>1,240</h3>
+                <h3 id="totalAlumni"></h3>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon bg-green"><i class="fas fa-briefcase"></i></div>
             <div class="stat-info">
                 <p>Employed</p>
-                <h3>942</h3>
+                <h3 id="totalEmployed"></h3>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon bg-slate"><i class="fas fa-user-slash"></i></div>
             <div class="stat-info">
                 <p>Unemployed</p>
-                <h3>280</h3>
+                <h3 id="totalUnemployed"></h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon bg-slate"><i class="fas fa-podcast"></i></div>
+            <div class="stat-info">
+                <p>Latest Update( <small>3 days</small> )</p>
+                <h3 id="latestUpdate"></h3>
             </div>
         </div>
     </div>
@@ -172,23 +179,48 @@
 
         <div class="box">
             <h3 class="box-title"><i class="fas fa-bullhorn" style="color: #b5935b;"></i> Announcements</h3>
-            
-            <div class="announce-item">
-                <h4>Annual Gala 2026</h4>
-                <p>Registration for the annual gala dinner is now open for all batches.</p>
-            </div>
-            
-            <div class="announce-item">
-                <h4>System Maintenance</h4>
-                <p>The alumni portal will be down for scheduled maintenance at 12:00 AM.</p>
-            </div>
-
-            <div class="announce-item">
-                <h4>New Job Posting Policy</h4>
-                <p>Important update regarding how alumni can post jobs in the forum.</p>
-            </div>
+            <div id="announcementList"></div>
         </div>
 
     </div>
 </div>
 @endsection
+@push('js')
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script>
+            //Calling data based on axios get method: 
+            axios.get('/api/dashboard')
+            .then(function(response) {
+                console.log(response.data);
+                let stats = response.data.data.stats;
+                document.getElementById('totalAlumni').innerText = stats.totalAlumni;
+                document.getElementById('totalEmployed').innerText = stats.totalEmployed;
+                document.getElementById('totalUnemployed').innerText = stats.totalUnemployed;
+           
+                // Announcement Start from here:
+               let announcements = response.data.data.announcements;
+                let html = '';
+
+                if (announcements && announcements.length > 0) {
+
+                    announcements.forEach(item => {
+                        html += `
+                            <div class="announce-item">
+                                <h4>${item.title}</h4>
+                                        <sup><small style="color:red;">${new Date(item.created_at).toLocaleDateString()}</small></sup>
+                                <p>${item.description}</p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = `<p>No announcements found</p>`;
+                }
+                document.getElementById('announcementList').innerHTML = html;
+           
+            })
+            .catch(function(error){
+                console.log("API Error:", error);
+            });    
+      </script>
+
+@endpush
