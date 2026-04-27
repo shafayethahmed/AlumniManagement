@@ -6,7 +6,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AuthController;
-use Faker\Guesser\Name;
+use App\Http\Controllers\ExperienceController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
 // For both admin and user.
@@ -50,6 +50,11 @@ Route::put('/alumni/update/{announcement}',[AnnouncementController::class, 'upda
 
  
 // User/Alumni user Routes: 
+Route::middleware('auth')->group(function (){
 Route::get('/dashboard',fn() => view('user.dashboard'))->name('user.dashboard');
 Route::get('/change-password' , fn() => view('user.change-password'))->name('user.change.password');
+Route::get('/profile', fn()=> view('user.profile'))->name('user.profile');
 Route::get('/members', fn()=>view('user.alumni.index'))->name('user.alumni.member');
+Route::post('/experience/add',[ExperienceController::class, 'store'])->name('experience.store');
+Route::put('/experience/{id}', [ExperienceController::class, 'update'])->name('experience.update');
+});

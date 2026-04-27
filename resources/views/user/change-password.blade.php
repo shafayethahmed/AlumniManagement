@@ -1,5 +1,4 @@
 @extends('user.layout')
-
 @section('title', 'Change Password')
 
 @push('css')

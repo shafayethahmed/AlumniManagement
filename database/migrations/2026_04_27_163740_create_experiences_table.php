@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('experiences', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+           $table->id();
+           $table->foreignId('user_id')
+          ->constrained('users') 
+          ->onDelete('cascade')
+          ->onUpdate('cascade');
             $table->string('company');
-            $table->string('started_at');
-            $table->string('resign_at')->default('N/A');
+            $table->string('position'); 
+            $table->date('started_at');
+            $table->date('resign_at')->nullable(); 
             $table->timestamps();
         });
     }

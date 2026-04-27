@@ -9,7 +9,9 @@ class Experience extends Model
     //
     protected $table = "experiences";
     protected $fillable = [
+        'user_id',
         'company',
+        'position',
         'started_at',
         'resign_at',
     ];
