@@ -5,19 +5,27 @@ use App\Http\Controllers\PendingMemberController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\AuthController;
 use Faker\Guesser\Name;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Debug\VirtualRequestStack;
 // For both admin and user.
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+// Auth Login Route: 
+Route::post('/login',[AuthController::class,'index'])->name('auth.login');
+
+Route::get('/logout',[AuthController::class, 'logout'])->name('auth.logout');
+
+
 
 // Admin Routes
+Route::middleware('auth')->group(function (){
 Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 Route::post('/admin/change-password', [PasswordController::class, 'updatePassword'])->name('admin.password.update');
 Route::get('/admin/change-password',[PasswordController::class,'index'])->name('change.password');
-
 // Alumni Member
 Route::get('/alumni/members',[MemberController::class, 'index'])->name('alumni.member');
 Route::get('/alumni/member/{member}',[MemberController::class, 'show'])->name('alumni.show');
@@ -37,6 +45,8 @@ Route::post('/alumni/announcement/store',[AnnouncementController::class, 'store'
 Route::get('/alumni/edit/{announcement}',[AnnouncementController::class, 'edit'])->name('announcement.edit');
 Route::get('/alumni/show/{announcement}',[AnnouncementController::class, 'show'])->name('announcement.show');
 Route::put('/alumni/update/{announcement}',[AnnouncementController::class, 'update'])->name('announcement.update');
+});
+
 
  
 // User/Alumni user Routes: 

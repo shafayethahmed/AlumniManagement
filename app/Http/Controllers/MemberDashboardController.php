@@ -12,7 +12,7 @@ class MemberDashboardController extends Controller
 {
     public function index(){
         //first getting the info about stats:
-        $totalAlumni = User::count();
+        $totalAlumni = User::count()-1;
         $totalEmployed = Profile::where('status','Employed')->count();
         $totalUnEmployed = Profile::where('status','Unemployed')->count();
         // $total = Profile::where('created_at', '>=', Carbon::now()->subDays(2));  Last 3 day job Update

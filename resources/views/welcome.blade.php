@@ -198,18 +198,27 @@
 
     <div class="form-wrapper">
         <div id="login" class="tab-content active">
-            <div id="loginNotice" class="alert-box">Login successful.</div>
-            <form onsubmit="handleLogin(event); return false;">
+             {{-- Flash Message --}}
+            @if(session('error') || session('success'))
+                <div id="flashMsg" 
+                    style="text-align:center; font-size:13px; padding:10px; border-radius:5px;
+                    color: {{ session('error') ? 'red' : 'green' }};
+                    background-color: {{ session('error') ? '#ffe6e6' : '#e6ffe6' }};">
+                    
+                    {{ session('error') ?? session('success') }}
+                </div>
+            @endif
+            <form method="POST" action="{{ route('auth.login') }}">
+                @csrf
                 <div class="field-group" style="margin-bottom: 20px;">
                     <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="alumni@university.edu" required>
+                    <input type="email" name="email"  id="loginEmail" placeholder="alumni@university.edu" required>
                 </div>
                 <div class="field-group" style="margin-bottom: 30px;">
                     <label>Password</label>
-                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                    <input type="password" name="password"  id="loginPass" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-primary">Enter Portal</button>
-                <a href="{{ route('user.dashboard') }}">User Login</a>
             </form>
         </div>
 
@@ -308,6 +317,14 @@
             jobInput.value = "";
         }
     }
+</script>
+<script id="1kq6ul">
+    setTimeout(() => {
+        let msg = document.getElementById('flashMsg');
+        if(msg){
+            msg.style.display = 'none';
+        }
+    }, 3000); // 3 sec
 </script>
 
 </body>

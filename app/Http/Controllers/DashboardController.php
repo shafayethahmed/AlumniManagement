@@ -16,7 +16,7 @@ class DashboardController extends Controller
          //Highlight
          //Announcement
 
-         $totalUser = User::count();
+         $totalUser = User::count()-1;
          $totalPending = PendingMember::count();
          $totalEmployed = Profile::where('status','Employed')->count();
          $totalUnEmployed = Profile::where('status','Unemployed')->count();

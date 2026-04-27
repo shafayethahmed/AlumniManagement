@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -51,8 +52,8 @@ class User extends Authenticatable
   public function profile(){
     return $this->hasOne(Profile::class,'user_id');
   }
-
-  public function experiences(){
+// Response to Experience(one to many)
+  public function experiences(){ 
     return $this->hasMany(Experience::class,'user_id');
   }
 

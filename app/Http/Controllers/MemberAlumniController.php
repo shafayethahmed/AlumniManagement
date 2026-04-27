@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 class MemberAlumniController extends Controller
 {
    public function index(){
-    $alumniMembers = User::with('Profile')->get();
+    $TotalAlumniMembers = User::where('role', '!=', 'admin')->count();
+    $alumniMembers =User::with('Profile')->where('role', '!=', 'admin') ->get();
+
     
    }
 }

@@ -122,7 +122,7 @@
         </div>
         
         <div style="font-size: 0.8rem; color: #64748b;">
-            Showing: <span id="visibleCount">2</span> members
+            Showing: <span id="visibleCount">{{ $TotalAlumniMembers }}</span> members
         </div>
     </div>
 

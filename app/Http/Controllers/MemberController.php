@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 class MemberController extends Controller
 {
     public function index(){
-        $members = User::with('Profile')->get();
-        return view('admin.alumni.index',compact('members'));
+         $TotalAlumniMembers = User::where('role', '!=', 'admin')->count();
+        $members = $members = User::with('Profile')->where('role', '!=', 'admin') ->get();
+        return view('admin.alumni.index',compact('members','TotalAlumniMembers'));
     }
     public function show(User $member){
        return view('admin.alumni.show',compact('member'));
