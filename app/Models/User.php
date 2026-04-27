@@ -52,7 +52,8 @@ class User extends Authenticatable
     return $this->hasOne(Profile::class,'user_id');
   }
 
-
-
+  public function experiences(){
+    return $this->hasMany(Experience::class,'user_id');
+  }
 
 }
