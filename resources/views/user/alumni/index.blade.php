@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('user.layout')
 
 @section('title', 'Alumni Members')
 
@@ -12,7 +12,6 @@
         border: 1px solid #e2e8f0;
     }
 
-    /* New Control Bar Styling */
     .table-controls {
         display: flex;
         justify-content: space-between;
@@ -79,14 +78,15 @@
         text-transform: uppercase;
     }
 
+    /* Matching your custom classes */
     .badge-employed { background-color: #dcfce7; color: #15803d; }
     .badge-unemployed { background-color: #f1f5f9; color: #64748b; }
 
     .action-btns { display: flex; gap: 5px; justify-content: center; }
 
     .btn-icon {
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -94,11 +94,14 @@
         font-size: 0.8rem;
         text-decoration: none;
         transition: 0.2s;
+        border: 1px solid #e2e8f0;
+        background: none;
+        cursor: pointer;
     }
 
-    .view-btn { border: 1px solid #e2e8f0; color: #64748b; }
-    .edit-btn { border: 1px solid #fbbf24; color: #92400e; }
-    .delete-btn { border: 1px solid #f87171; color: #991b1b; }
+    .view-btn { color: #64748b; }
+    .edit-btn { border-color: #fbbf24; color: #92400e; }
+    .delete-btn { border-color: #f87171; color: #991b1b; }
 </style>
 @endpush
 
@@ -118,11 +121,13 @@
                 <option value="2022">2022</option>
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
             </select>
         </div>
         
         <div style="font-size: 0.8rem; color: #64748b;">
-            Showing: <span id="visibleCount">2</span> members
+            Showing: <span id="visibleCount">0</span> members
         </div>
     </div>
 
@@ -140,8 +145,10 @@
                     <th style="text-align: center;">Actions</th>
                 </tr>
             </thead>
-            <tbody>
-               <div id="AlumniMembertable"></div>  
+            <tbody id="AlumniMemberTable">
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 20px;">Loading members...</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -149,7 +156,7 @@
 @endsection
 
 @push('js')
- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     function applyFilters() {
         const searchValue = document.getElementById('searchInput').value.toLowerCase();
@@ -177,14 +184,55 @@
         document.getElementById('visibleCount').innerText = visibleCount;
     }
     
-   //axios get request for member display:
-   axios.get('/alumni-member')
-   .then(function(response){
-         console.log(response.data);
+    // Fetch members
+    axios.get('api/alumni-members')
+    .then(function(response) {
+        // Handle both data.members or data.data.members depending on your API structure
+        const members = response.data.data.members || response.data.members;
+        const tableBody = document.getElementById('AlumniMemberTable');
+        
+        tableBody.innerHTML = '';
 
-   })
-   .catch(function(error){
-     console.log("API Error:", error);    
-   });
+        members.forEach(member => {
+            const status = member.profile?.status || 'Unknown';
+            const statusClass = status === 'Employed' ? 'badge-employed' : 'badge-unemployed';
+            
+            const row = `
+                <tr class="alumni-row">
+                    <td class="col-id">${member.id}</td>
+                    <td class="col-name"><strong>${member.name}</strong></td>
+                    <td class="col-email">${member.email}</td>
+                    <td>${member.profile ? member.profile.mobile : 'N/A'}</td>
+                    <td>${member.profile ? member.profile.department : 'N/A'}</td>
+                    <td class="col-year">${member.profile ? member.profile.graduation_year : 'N/A'}</td>
+                    <td>
+                        <span class="badge ${statusClass}">${status}</span>
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            <button title="View" class="btn-icon view-btn" onclick="viewMember(${member.id})">i</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+        // Update the count after loading
+        document.getElementById('visibleCount').innerText = members.length;
+    })
+    .catch(function(error) {
+        console.error("Error fetching alumni data:", error);
+        document.getElementById('AlumniMemberTable').innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Failed to load data.</td></tr>';
+    });
+
+    // Placeholder functions for actions
+    function viewMember(id) { 
+    // Replace 'id_placeholder' with the actual ID in JS
+    let url = "{{ route('user.alummni.view', ':id') }}";
+    url = url.replace(':id', id);
+    
+    window.location.href = url;
+    }
 </script>
 @endpush

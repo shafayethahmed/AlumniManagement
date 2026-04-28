@@ -128,57 +128,20 @@
         <div class="stat-card">
             <div class="stat-icon bg-slate"><i class="fas fa-podcast"></i></div>
             <div class="stat-info">
-                <p>Latest Update( <small>3 days</small> )</p>
+                <p>Latest Update</p>
                 <h3 id="latestUpdate"></h3>
             </div>
         </div>
     </div>
 
     <div class="dashboard-grid">
-        
         <div class="box">
-            <h3 class="box-title"><i class="fas fa-bolt" style="color: #fbbf24;"></i> Today's Highlights</h3>
-            <div class="activity-feed">
-                <div class="activity-item">
-                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=Arif+Rahman" class="avatar-sm"></div>
-                    <div class="activity-text">
-                        <strong>Arif Rahman</strong> added a new experience: <strong>Senior Developer</strong> at <strong>Google BD</strong>
-                        <span class="activity-time">2 hours ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=Sarah+J" class="avatar-sm"></div>
-                    <div class="activity-text">
-                        <strong>Sarah Jenkins</strong> updated her profile status to <span style="color:#16a34a; font-weight:700;">Employed</span>
-                        <span class="activity-time">4 hours ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=M+Kamal" class="avatar-sm"></div>
-                    <div class="activity-text">
-                        <strong>Mustafa Kamal</strong> joined the Alumni network and is awaiting approval.
-                        <span class="activity-time">6 hours ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=Tanvir+A" class="avatar-sm"></div>
-                    <div class="activity-text">
-                        <strong>Tanvir Ahmed</strong> updated his <strong>Graduation Year</strong> to 2023.
-                        <span class="activity-time">Yesterday</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=Liza+K" class="avatar-sm"></div>
-                    <div class="activity-text">
-                        <strong>Liza Khan</strong> added a new experience: <strong>UI Designer</strong> at <strong>Creative IT</strong>
-                        <span class="activity-time">Yesterday</span>
-                    </div>
-                </div>
-            </div>
+            <h3 class="box-title"><i class="fas fa-bolt" style="color: #fbbf24;"></i> Highlights</h3>
+            <div id="highlightList"></div>
         </div>
 
         <div class="box">
-            <h3 class="box-title"><i class="fas fa-bullhorn" style="color: #b5935b;"></i> Announcements</h3>
+            <h3 class="box-title"><i class="fas fa-bullhorn" style="color: #b5935b;"></i>Announcements</h3>
             <div id="announcementList"></div>
         </div>
 
@@ -186,41 +149,71 @@
 </div>
 @endsection
 @push('js')
-     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-      <script>
-            //Calling data based on axios get method: 
-            axios.get('/api/dashboard')
-            .then(function(response) {
-                console.log(response.data);
-                let stats = response.data.data.stats;
-                document.getElementById('totalAlumni').innerText = stats.totalAlumni;
-                document.getElementById('totalEmployed').innerText = stats.totalEmployed;
-                document.getElementById('totalUnemployed').innerText = stats.totalUnemployed;
-           
-                // Announcement Start from here:
-               let announcements = response.data.data.announcements;
-                let html = '';
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    axios.get('/api/dashboard')
+    .then(function(response) {
+        console.log(response.data);
+        
+        // Safety check for data structure
+        if (!response.data || !response.data.data) return;
 
-                if (announcements && announcements.length > 0) {
+        let stats = response.data.data.stats;
+        document.getElementById('totalAlumni').innerText = stats.totalAlumni;
+        document.getElementById('totalEmployed').innerText = stats.totalEmployed;
+        document.getElementById('totalUnemployed').innerText = stats.totalUnemployed;
 
-                    announcements.forEach(item => {
-                        html += `
-                            <div class="announce-item">
-                                <h4>${item.title}</h4>
-                                        <sup><small style="color:red;">${new Date(item.created_at).toLocaleDateString()}</small></sup>
-                                <p>${item.description}</p>
-                            </div>
-                        `;
-                    });
-                } else {
-                    html = `<p>No announcements found</p>`;
-                }
-                document.getElementById('announcementList').innerHTML = html;
-           
-            })
-            .catch(function(error){
-                console.log("API Error:", error);
-            });    
-      </script>
+        // --- Highlights Section ---
+        let highlights = response.data.data.highlights || [];
+        document.getElementById('latestUpdate').innerText = highlights.length;
+
+        let html = ''; // First declaration
+
+        if (highlights.length > 0) {
+            highlights.forEach(item => {
+                let startDate = item.started_at ? new Date(item.started_at).toLocaleDateString() : '';
+                let endDate = item.resign_at ? new Date(item.resign_at).toLocaleDateString() : 'Present';
+                let createdDate = item.created_at ? new Date(item.created_at).toLocaleDateString() : '';
+
+                html += `
+                   <div class="activity-item">
+                    <div class="avatar-sm"><img src="https://ui-avatars.com/api/?name=A+M" class="avatar-sm"></div>
+                    <div class="activity-text">
+                        <strong>Alumni-${item.user_id}</strong> updated his/her <strong>Working Profile</strong>.
+                        <span class="activity-time">${createdDate}</span>
+                    </div>
+                   </div>`;
+                
+            });
+        } else {
+            html = `<p>No highlights found</p>`;
+        }
+        document.getElementById('highlightList').innerHTML = html;
+
+        // --- Announcement Section ---
+        let announcements = response.data.data.announcements || [];
+        
+        // FIX: Removed 'let' here because 'html' is already declared above
+        html = ''; 
+
+        if (announcements.length > 0) {
+            announcements.forEach(item => {
+                html += `
+                    <div class="announce-item">
+                        <h4>${item.title}</h4>
+                        <sup><small style="color:red;">${new Date(item.created_at).toLocaleDateString()}</small></sup>
+                        <p>${item.description}</p>
+                    </div>`;
+            });
+        } else {
+            html = `<p>No announcements found</p>`;
+        }
+        document.getElementById('announcementList').innerHTML = html;
+
+    })
+    .catch(function(error){
+        console.error("API Error:", error);
+    });    
+</script>
 
 @endpush

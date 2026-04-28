@@ -16,5 +16,6 @@ use App\Http\Controllers\ExperienceController;
         Route::get('/dashboard',[MemberDashboardController::class, 'index']);
         Route::get('/profile/{id}', [MemberProfileController::class, 'index']);
         Route::delete('/experience/{id}', [ExperienceController::class, 'destroy']);
+        Route::get('/alumni-members',[MemberAlumniController::class, 'index']);
 
 

@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Models\Experience;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class MemberDashboardController extends Controller
 {
@@ -18,8 +19,7 @@ class MemberDashboardController extends Controller
         // $total = Profile::where('created_at', '>=', Carbon::now()->subDays(2));  Last 3 day job Update
         //Announcement Call : 
         $announcements = Announcement::where('is_visible',1)->get();
- 
-        return response()->json([
+        $latestHighlights = Experience::where('updated_at', '>=', Carbon::now()->subDays(1))->get();        return response()->json([
             'status'=> true,
              'data' => [
                 'stats' => [
@@ -28,6 +28,7 @@ class MemberDashboardController extends Controller
                     'totalUnemployed' => $totalUnEmployed,
                 ],
                 'announcements' => $announcements,
+                'highlights' => $latestHighlights,
              ]
         ]);
     }

@@ -163,7 +163,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('user.alumni.member') }}" class="nav-link {{ request()->is('admin/members*') ? 'active' : '' }}">
+                <a href="{{ route('user.member.alumni') }}" class="nav-link">
                     <i class="fas fa-users"></i> Alumni Member
                 </a>
             </li>   
